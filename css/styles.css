@@ -1,0 +1,48 @@
+html {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.body-container {
+  width: 700px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  font-size: 32px;
+  text-align: center;
+}
+
+.input-text-area {
+  width: 100%;
+  height: 200px;
+}
+
+.keyboard-container {
+  width: 100%;
+  background-color: #888888;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.key {
+  background-color: #444444;
+  color: #ffffff;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
