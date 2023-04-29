@@ -71,7 +71,6 @@ function RedrawKeys() {
           langSpanValue.classList.remove('hidden');
         } else langSpanValue.classList.add('hidden');
       });
-      console.log();
     });
   });
 }
@@ -93,6 +92,31 @@ function SwitchCaseState(key, isKeydown) {
   }
 }
 
+function HandleKeyClickEvent(event, isFromRealKeyboard) {
+  let keyParent;
+  if (isFromRealKeyboard === false) {
+    keyParent = event.target.closest('.key');
+  } else if (isFromRealKeyboard === true) {
+    allKeysArray.forEach((key) => {
+      if (key.classList.contains(`${event.code}`)) {
+        keyParent = key;
+      }
+    });
+  }
+  if (keyParent) {
+    keyParent.childNodes.forEach((element) => {
+      if (element.classList.contains('hidden') === false) {
+        element.childNodes.forEach((span) => {
+          if (span.classList.contains('hidden') === false) {
+            // TODO: here should be function that prints character in textArea
+            console.log(span.textContent);
+          }
+        });
+      }
+    });
+  }
+}
+
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Shift' || event.key === 'CapsLock') {
     SwitchCaseState(event.key, true);
@@ -103,7 +127,10 @@ document.addEventListener('keydown', (event) => {
     RedrawKeys();
   }
   const btn = document.querySelector(`.${event.code}`);
-  if (btn) btn.classList.add('active');
+  if (btn) {
+    btn.classList.add('active');
+    HandleKeyClickEvent(event, true);
+  }
 });
 
 document.addEventListener('keyup', (event) => {
@@ -114,4 +141,8 @@ document.addEventListener('keyup', (event) => {
     SwitchCaseState(event.key, false);
     RedrawKeys();
   }
+});
+
+keyboardContainer.addEventListener('mousedown', (event) => {
+  HandleKeyClickEvent(event, false);
 });
