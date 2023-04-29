@@ -2,7 +2,7 @@ import props from './binds.js';
 
 let currentLanguage = 'ru';
 let currentCaseState = 'caseDown';
-let allKeysArray = [];
+const allKeysArray = [];
 
 const bodyContainer = document.createElement('div');
 const header = document.createElement('h1');
@@ -66,16 +66,52 @@ function RedrawKeys() {
       if (langSpan.classList.contains(currentLanguage)) {
         langSpan.classList.remove('hidden');
       } else langSpan.classList.add('hidden');
-
+      langSpan.childNodes.forEach((langSpanValue) => {
+        if (langSpanValue.classList.contains(currentCaseState)) {
+          langSpanValue.classList.remove('hidden');
+        } else langSpanValue.classList.add('hidden');
+      });
       console.log();
     });
   });
 }
 
+function SwitchCaseState(key, isKeydown) {
+  if (key === 'Shift' && isKeydown === true) {
+    if (currentCaseState === 'caseDown') currentCaseState = 'caseUp';
+    else if (currentCaseState === 'caps') currentCaseState = 'shiftCaps';
+  }
+  if (key === 'Shift' && isKeydown === false) {
+    if (currentCaseState === 'caseUp') currentCaseState = 'caseDown';
+    else if (currentCaseState === 'shiftCaps') currentCaseState = 'caps';
+  }
+  if (key === 'CapsLock' && isKeydown === true) {
+    if (currentCaseState === 'caseDown') currentCaseState = 'caps';
+    else if (currentCaseState === 'caseUp') currentCaseState = 'shiftCaps';
+    else if (currentCaseState === 'caps') currentCaseState = 'caseDown';
+    else if (currentCaseState === 'shiftCaps') currentCaseState = 'caseUp';
+  }
+}
+
 document.addEventListener('keydown', (event) => {
-  if (event.shiftKey) {
-    currentCaseState = 'caseUp';
+  if (event.key === 'Shift' || event.key === 'CapsLock') {
+    SwitchCaseState(event.key, true);
+    RedrawKeys();
+  }
+  if (event.altKey && event.ctrlKey) {
     SwitchLanguage();
+    RedrawKeys();
+  }
+  const btn = document.querySelector(`.${event.code}`);
+  if (btn) btn.classList.add('active');
+});
+
+document.addEventListener('keyup', (event) => {
+  const btn = document.querySelector(`.${event.code}`);
+  if (btn) btn.classList.remove('active');
+
+  if (event.key === 'Shift') {
+    SwitchCaseState(event.key, false);
     RedrawKeys();
   }
 });
