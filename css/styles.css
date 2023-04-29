@@ -45,11 +45,13 @@ html {
   padding: 8px;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.5s;
+  transition: all 0.1s;
 }
 
+.key.active,
 .key:active {
-  background-color: seagreen;
+  background-color: rgb(115, 184, 10);
+  border-radius: 100px;
 }
 
 .hidden {
