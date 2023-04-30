@@ -9,7 +9,7 @@ html {
 }
 
 .body-container {
-  width: 700px;
+  width: 726px;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -17,13 +17,22 @@ html {
 }
 
 .header {
+  margin-top: 20px;
   font-size: 32px;
+  text-align: center;
+}
+
+.subheader {
+  font-size: 16px;
   text-align: center;
 }
 
 .input-text-area {
   width: 100%;
   height: 200px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 16px;
+  padding: 10px;
 }
 
 .keyboard-container {
@@ -31,6 +40,9 @@ html {
   background-color: #888888;
   border-radius: 6px;
   padding: 12px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
 }
 
 .keyboard-row {
@@ -42,10 +54,66 @@ html {
 .key {
   background-color: #444444;
   color: #ffffff;
-  padding: 8px;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.1s;
+  transition: all 0.2s;
+
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+.key:hover {
+  background-color: rgb(84, 106, 49);
+}
+
+.AltLeft,
+.AltRight,
+.ArrowUp,
+.ArrowLeft,
+.ArrowDown,
+.ArrowRight,
+.Backspace,
+.CapsLock,
+.ControlLeft,
+.ControlRight,
+.Delete,
+.Enter,
+.ShiftLeft,
+.ShiftRight,
+.Tab,
+.MetaLeft {
+  font-weight: 600;
+  letter-spacing: 1;
+  background-color: #222222;
+}
+
+.CapsLock,
+.ShiftLeft,
+.Backspace {
+  width: 100px;
+}
+
+.Delete {
+  width: 44px;
+}
+
+.Tab {
+  width: 50px;
+}
+
+.Space {
+  width: 330px;
+}
+
+.Enter,
+.ShiftRight {
+  width: 86px;
 }
 
 .key.active,
