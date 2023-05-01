@@ -151,6 +151,19 @@ function HandleKeyClickEvent(event, isFromRealKeyboard) {
 
   if (isFromRealKeyboard === false) {
     keyParent = event.target.closest('.key');
+    if (keyParent) {
+      if (keyParent.classList.contains('CapsLock')) {
+        SwitchCaseState('CapsLock', true);
+        RedrawKeys();
+        if (currentCaseState !== 'caps' && currentCaseState !== 'shiftCaps') {
+          keyParent.classList.remove('active');
+        } else keyParent.classList.add('active');
+      }
+      if (keyParent.classList.contains('ShiftLeft') || keyParent.classList.contains('ShiftRight')) {
+        SwitchCaseState('Shift', true);
+        RedrawKeys();
+      }
+    }
   } else if (isFromRealKeyboard === true) {
     allKeysArray.forEach((key) => {
       if (key.classList.contains(`${event.code}`)) {
@@ -190,7 +203,13 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('keyup', (event) => {
   const btn = document.querySelector(`.${event.code}`);
   if (btn) {
-    btn.classList.remove('active');
+    if (event.code === 'CapsLock') {
+      if (currentCaseState !== 'caps' && currentCaseState !== 'shiftCaps') {
+        btn.classList.remove('active');
+      }
+    } else {
+      btn.classList.remove('active');
+    }
   }
 
   if (event.key === 'Shift') {
@@ -201,4 +220,15 @@ document.addEventListener('keyup', (event) => {
 
 keyboardContainer.addEventListener('mousedown', (event) => {
   HandleKeyClickEvent(event, false);
+});
+
+keyboardContainer.addEventListener('mouseup', (event) => {
+  event.preventDefault();
+  const keyParent = event.target.closest('.key');
+  if (keyParent) {
+    if (keyParent.classList.contains('ShiftLeft') || keyParent.classList.contains('ShiftRight')) {
+      SwitchCaseState('Shift', false);
+      RedrawKeys();
+    }
+  }
 });
