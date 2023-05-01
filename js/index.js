@@ -110,40 +110,37 @@ function SubmitKeyToTextArea(keyValue) {
 
   if (keyValue === 'Backspace') {
     if (cursorPositon > 0) {
-      textArea.value =
-        textArea.value.slice(0, cursorPositon - 1) + textArea.value.slice(cursorPositon);
+      textArea.value = textArea.value.slice(0, cursorPositon - 1)
+      + textArea.value.slice(cursorPositon);
       textArea.selectionStart = Math.max(0, cursorPositon - 1);
       textArea.selectionEnd = textArea.selectionStart;
     }
   } else if (keyValue === 'Del') {
-    textArea.value =
-      textArea.value.slice(0, cursorPositon) + textArea.value.slice(cursorPositon + 1);
+    textArea.value = textArea.value.slice(0, cursorPositon)
+    + textArea.value.slice(cursorPositon + 1);
     textArea.selectionStart = cursorPositon;
     textArea.selectionEnd = textArea.selectionStart;
   } else if (keyValue === 'Tab') {
-    textArea.value =
-      textArea.value.slice(0, cursorPositon).concat('    ') + textArea.value.slice(cursorPositon);
+    textArea.value = textArea.value.slice(0, cursorPositon).concat('    ') + textArea.value.slice(cursorPositon);
     textArea.selectionStart = cursorPositon + 4;
     textArea.selectionEnd = textArea.selectionStart;
   } else if (keyValue === 'Enter') {
-    textArea.value =
-      textArea.value.slice(0, cursorPositon).concat('\n') + textArea.value.slice(cursorPositon);
+    textArea.value = textArea.value.slice(0, cursorPositon).concat('\n') + textArea.value.slice(cursorPositon);
     textArea.selectionStart = cursorPositon + 1;
     textArea.selectionEnd = textArea.selectionStart;
   } else if (keyValue === '') {
-    textArea.value =
-      textArea.value.slice(0, cursorPositon).concat(' ') + textArea.value.slice(cursorPositon);
+    textArea.value = textArea.value.slice(0, cursorPositon).concat(' ') + textArea.value.slice(cursorPositon);
     textArea.selectionStart = cursorPositon + 1;
     textArea.selectionEnd = textArea.selectionStart;
   } else if (
-    keyValue !== 'CapsLock' &&
-    keyValue !== 'Shift' &&
-    keyValue !== 'Ctrl' &&
-    keyValue !== 'Alt' &&
-    keyValue !== 'Win'
+    keyValue !== 'CapsLock'
+    && keyValue !== 'Shift'
+    && keyValue !== 'Ctrl'
+    && keyValue !== 'Alt'
+    && keyValue !== 'Win'
   ) {
-    textArea.value =
-      textArea.value.slice(0, cursorPositon).concat(keyValue) + textArea.value.slice(cursorPositon);
+    textArea.value = textArea.value.slice(0, cursorPositon).concat(keyValue)
+    + textArea.value.slice(cursorPositon);
     textArea.selectionStart = cursorPositon + 1;
     textArea.selectionEnd = textArea.selectionStart;
   }
