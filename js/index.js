@@ -6,6 +6,8 @@ const allKeysArray = [];
 
 const bodyContainer = document.createElement('div');
 const header = document.createElement('h1');
+const subheader1 = document.createElement('p');
+const subheader2 = document.createElement('p');
 const textArea = document.createElement('textarea');
 const keyboardContainer = document.createElement('div');
 
@@ -13,6 +15,12 @@ bodyContainer.className = 'body-container';
 header.className = 'header';
 textArea.className = 'input-text-area';
 keyboardContainer.className = 'keyboard-container';
+subheader1.className = 'subheader';
+subheader2.className = 'subheader';
+
+header.textContent = 'RSS Virtual keyboard';
+subheader1.textContent = 'Клавиатура создана в операционной системе Windows';
+subheader2.textContent = 'Комбинация для переключения языка: левыe ctrl + alt';
 
 function SwitchLanguage() {
   if (currentLanguage === 'ru') currentLanguage = 'en';
@@ -56,7 +64,7 @@ function GenerateKeyboard() {
 }
 
 GenerateKeyboard();
-bodyContainer.append(header, textArea, keyboardContainer);
+bodyContainer.append(header, subheader1, subheader2, textArea, keyboardContainer);
 document.body.append(bodyContainer);
 
 function RedrawKeys() {
@@ -92,8 +100,55 @@ function SwitchCaseState(key, isKeydown) {
   }
 }
 
+function SubmitKeyToTextArea(keyValue) {
+  const cursorPositon = textArea.selectionStart;
+
+  if (keyValue === 'Backspace') {
+    if (cursorPositon > 0) {
+      textArea.value =
+        textArea.value.slice(0, cursorPositon - 1) + textArea.value.slice(cursorPositon);
+      textArea.selectionStart = Math.max(0, cursorPositon - 1);
+      textArea.selectionEnd = textArea.selectionStart;
+    }
+  } else if (keyValue === 'Del') {
+    textArea.value =
+      textArea.value.slice(0, cursorPositon) + textArea.value.slice(cursorPositon + 1);
+    textArea.selectionStart = cursorPositon;
+    textArea.selectionEnd = textArea.selectionStart;
+  } else if (keyValue === 'Tab') {
+    textArea.value =
+      textArea.value.slice(0, cursorPositon).concat('    ') + textArea.value.slice(cursorPositon);
+    textArea.selectionStart = cursorPositon + 4;
+    textArea.selectionEnd = textArea.selectionStart;
+  } else if (keyValue === 'Enter') {
+    textArea.value =
+      textArea.value.slice(0, cursorPositon).concat('\n') + textArea.value.slice(cursorPositon);
+    textArea.selectionStart = cursorPositon + 1;
+    textArea.selectionEnd = textArea.selectionStart;
+  } else if (keyValue === '') {
+    textArea.value =
+      textArea.value.slice(0, cursorPositon).concat(' ') + textArea.value.slice(cursorPositon);
+    textArea.selectionStart = cursorPositon + 1;
+    textArea.selectionEnd = textArea.selectionStart;
+  } else if (
+    keyValue !== 'CapsLock' &&
+    keyValue !== 'Shift' &&
+    keyValue !== 'Ctrl' &&
+    keyValue !== 'Alt' &&
+    keyValue !== 'Win'
+  ) {
+    textArea.value =
+      textArea.value.slice(0, cursorPositon).concat(keyValue) + textArea.value.slice(cursorPositon);
+    textArea.selectionStart = cursorPositon + 1;
+    textArea.selectionEnd = textArea.selectionStart;
+  }
+}
+
 function HandleKeyClickEvent(event, isFromRealKeyboard) {
+  event.preventDefault();
+
   let keyParent;
+
   if (isFromRealKeyboard === false) {
     keyParent = event.target.closest('.key');
   } else if (isFromRealKeyboard === true) {
@@ -108,8 +163,7 @@ function HandleKeyClickEvent(event, isFromRealKeyboard) {
       if (element.classList.contains('hidden') === false) {
         element.childNodes.forEach((span) => {
           if (span.classList.contains('hidden') === false) {
-            // TODO: here should be function that prints character in textArea
-            console.log(span.textContent);
+            SubmitKeyToTextArea(span.textContent);
           }
         });
       }
@@ -135,7 +189,9 @@ document.addEventListener('keydown', (event) => {
 
 document.addEventListener('keyup', (event) => {
   const btn = document.querySelector(`.${event.code}`);
-  if (btn) btn.classList.remove('active');
+  if (btn) {
+    btn.classList.remove('active');
+  }
 
   if (event.key === 'Shift') {
     SwitchCaseState(event.key, false);
