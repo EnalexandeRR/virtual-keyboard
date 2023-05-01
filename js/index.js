@@ -1,6 +1,6 @@
 import props from './binds.js';
 
-let currentLanguage = 'ru';
+let currentLanguage;
 let currentCaseState = 'caseDown';
 const allKeysArray = [];
 
@@ -22,9 +22,14 @@ header.textContent = 'RSS Virtual keyboard';
 subheader1.textContent = 'Клавиатура создана в операционной системе Windows';
 subheader2.textContent = 'Комбинация для переключения языка: левыe ctrl + alt';
 
+currentLanguage = localStorage.getItem('language');
+if (!currentLanguage) currentLanguage = 'en';
+
 function SwitchLanguage() {
   if (currentLanguage === 'ru') currentLanguage = 'en';
   else currentLanguage = 'ru';
+
+  localStorage.setItem('language', currentLanguage);
 }
 
 function GenerateKeyboard() {
